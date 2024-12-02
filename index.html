@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Hello Bulma!</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+        <style>
+            .image.is-192x192 {
+                height: 192px;
+                width: 192px;
+            }
+        </style>
+    </head>
+    <body>
+
+
+    <section class="section">
+        <div class="container">
+            <h1 class="title">
+            Hello World
+            </h1>
+            <p class="subtitle">
+                My first website with <strong>Bulma</strong>!
+            </p>
+        </div>
+    </section>
+
+    <section class="section is-medium">
+        <div class="container is-widescreen">
+            <div class="columns  is-vcentered is-centered">
+                <div class="column has-text-centered">
+                    <figure class="image is-192x192">
+                        <img src="img/morten-hartvig-larsen.jpeg" alt="Morten Hartvig Larsen" class="is-rounded">
+                    </figure>
+                </div>
+                <div class="column is-two-thirds">
+                    
+                    <div class="columns is-8 is-multiline">
+                        <div class="column is-half">
+                            <h2 class="title">Rådgivning</h2>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga quod maiores cupiditate nemo aut! Repellat, iure itaque voluptatibus totam ad dolore ipsa magnam sit. Cumque, at dolorem? Quidem, cupiditate est!
+                            </p>
+                        </div>
+                        <div class="column is-half">
+                            <h2 class="title">Projektledelse</h2>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab, deserunt necessitatibus eligendi ex facilis dolores deleniti saepe quasi facere eveniet nihil vel aliquam alias illo incidunt praesentium perspiciatis hic tempora.
+                            </p>
+                        </div>
+                        <div class="column is-half">
+                            <h2 class="title">Rådgivning</h2>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga quod maiores cupiditate nemo aut! Repellat, iure itaque voluptatibus totam ad dolore ipsa magnam sit. Cumque, at dolorem? Quidem, cupiditate est!
+                            </p>
+                        </div>
+                        <div class="column is-half">
+                            <h2 class="title">Projektledelse</h2>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab, deserunt necessitatibus eligendi ex facilis dolores deleniti saepe quasi facere eveniet nihil vel aliquam alias illo incidunt praesentium perspiciatis hic tempora.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="devto">
+
+            </div>
+        </div>
+    </section>
+
+    <script>
+
+        async function getDevPosts() {
+            const devto = document.querySelector('.devto');
+
+            try {
+                const response = await fetch('https://dev.to/api/articles?username=hartviglarsen');
+
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+
+                const json = await response.json();
+                
+                json.forEach(obj => {
+                    var elm = document.createElement('div');
+                    elm.innerHTML = obj.title;
+
+                    devto.appendChild(elm);
+                });
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await getDevPosts();
+        })
+    </script>
+  </body>
+</html>
