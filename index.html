@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Morten Hartvig</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        .image.is-192x192 {
+            height: 192px;
+            width: 192px;
+        }
+
+        .post+.post {
+            margin-top: 2em;
+        }
+
+        .tags {
+            margin-top: 20px;
+        }
+
+        .post .title {
+            display: inline-block;
+        }
+
+        .post a {
+            color: white;
+        }
+
+        .post .icon {
+            transform: rotate(-45deg);
+        }
+    </style>
+</head>
+<body class="dark">
+
+    <div id="app">
+        <section class="section">
+            <div class="container">
+                <h1 class="title">
+                    Morten Hartvig
+                </h1>
+            </div>
+        </section>
+    
+        <section class="section">
+            <div class="container">
+                <div class="columns">
+    
+                    <div class="column">
+                        <h2 class="title">
+                            Writings
+                        </h2>
+                    </div>
+    
+                    <div class="column is-two-thirds">
+                        <posts />
+                    </div>
+    
+                </div>
+            </div>
+        </section>
+    
+        <footer class="footer">
+            <div class="content has-text-centered">
+                <p><span class="email"></span></p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Lazy man's version of a SPA
+        const posts = {
+            template: `
+            <div class="posts">
+                <div class="post" v-for="post in posts">
+                    <a :href="post.url" target="_blank"><h3 class="title is-5">{{ post.title }}</h3>
+                        <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
+                    </a>
+                    <p>{{ post.description }}</p>
+
+                    <div class="tags">
+                        <span class="tag" v-for="tag in post.tag_list">{{ tag }}</span>
+                    </div>
+                </div>
+            </div>
+            `,
+            data: () => ({
+                posts: []
+            }),
+            created() {
+                this.getPosts();
+            },
+            methods: {
+                async getPosts() {
+                    try {
+                        const response = await fetch('https://dev.to/api/articles?username=hartviglarsen');
+
+                        if (!response.ok) {
+                            throw new Error(`Response status: ${response.status}`);
+                        }
+
+                        this.posts = await response.json();
+                        console.log(this.posts)
+
+                    } catch (error) {
+                        console.error(error.message);
+                    }
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const app = Vue.createApp();
+            app.component('posts', posts);
+            app.mount('#app');
+
+            document.querySelector('.email').innerHTML = atob('aGVqQG1vcnRlbmhhcnR2aWcuZGs=');
+        })
+    </script>
+  </body>
+</html>
